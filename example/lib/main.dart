@@ -100,7 +100,7 @@ class _MyAppState extends State<MyApp> {
                     );
 
                     print("connected - $res");
-                    if (res ?? false) {
+                    if (res!=null) {
                       setState(() {
                         currentConnection = e;
                       });
