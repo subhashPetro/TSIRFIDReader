@@ -1,0 +1,3 @@
+rootProject.name = 'tsl_rfid_plugin'
+include ':Rfid.AsciiProtocol-Library'
+include ':DeviceList'

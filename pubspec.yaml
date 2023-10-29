@@ -1,0 +1,37 @@
+name: tsl_rfid_plugin
+description: A new Flutter project.
+version: 0.0.1
+homepage:
+
+environment:
+  sdk: '>=3.0.6 <4.0.0'
+  flutter: ">=3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
+  plugin_platform_interface: ^2.0.2
+  rfiid_reader:
+    git: https://github.com/subhashPetro/Rfiid_flutter_plugin.git
+  zebra_print_plugin:
+    git: https://github.com/subhashPetro/zebra_print_plugin.git
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^2.0.0
+
+flutter:
+
+  plugin:
+    platforms:
+      android:
+        package: com.example.tsl_rfid_plugin
+        pluginClass: TslRfidPlugin
+#      ios:
+#        pluginClass: TslRfidPlugin
+#      web:
+#        pluginClass: TslRfidPluginWeb
+#        fileName: tsl_rfid_plugin_web.dart
