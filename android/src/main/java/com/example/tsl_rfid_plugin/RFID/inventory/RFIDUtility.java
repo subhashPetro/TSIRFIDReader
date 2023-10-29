@@ -32,6 +32,7 @@ public class RFIDUtility {
     private static final String TAG = "RFIDUtility";
     private static final boolean D = BuildConfig.DEBUG;
     private Reader mReader = null;
+    private ObservableReaderList mReaders;
     private Reader mLastUserDisconnectedReader = null;
     private boolean mIsSelectingReader = false;
 
@@ -42,7 +43,6 @@ public class RFIDUtility {
     }
 
     public void initRfidModel(){
-        ReaderManager.sharedInstance().updateList();
         // Ensure the shared instance of AsciiCommander exists
         AsciiCommander.createSharedInstance(context);
 
@@ -61,11 +61,18 @@ public class RFIDUtility {
 
         // Configure the ReaderManager when necessary
         ReaderManager.create(context);
-
+        ReaderManager.sharedInstance().updateList();
         // Add observers for changes
         ReaderManager.sharedInstance().getReaderList().readerAddedEvent().addObserver(mAddedObserver);
         ReaderManager.sharedInstance().getReaderList().readerUpdatedEvent().addObserver(mUpdatedObserver);
         ReaderManager.sharedInstance().getReaderList().readerRemovedEvent().addObserver(mRemovedObserver);
+
+        mModel = new InventoryModel();
+        mModel.setCommander(getCommander());
+        // The handler for model messages
+        GenericHandler mGenericModelHandler = new GenericHandler(this);
+        mModel.setHandler(mGenericModelHandler);
+        AutoSelectReader(true);
 
     }
 
@@ -76,25 +83,22 @@ public class RFIDUtility {
        if (deviceList.isEmpty()) {
            return new ArrayList<>();
        }
-       for (int i =0; i<=deviceList.size(); i++){
+       for (int i =0; i<deviceList.size(); i++){
            Map deviceData = new HashMap<>();
            deviceData.put("displayName",deviceList.get(i).getDisplayName());
            deviceData.put("serialNumber",deviceList.get(i).getSerialNumber());
+           deviceData.put("deviceMacId",deviceList.get(i).getDisplayInfoLine());
            deviceData.put("deviceProperties",deviceList.get(i).getDeviceProperties());
-           deviceData.put("deviceRegion",deviceList.get(i).getDeviceProperties().getRegion());
-           deviceData.put("maximumCarrierPower",deviceList.get(i).getDeviceProperties().getMaximumCarrierPower());
-           deviceData.put("minimumCarrierPower",deviceList.get(i).getDeviceProperties().getMinimumCarrierPower());
+//           deviceData.put("deviceRegion",deviceList.get(i).getDeviceProperties().getRegion());
+//           deviceData.put("maximumCarrierPower",deviceList.get(i).getDeviceProperties().getMaximumCarrierPower());
+//           deviceData.put("minimumCarrierPower",deviceList.get(i).getDeviceProperties().getMinimumCarrierPower());
            responseData.add(deviceData);
        }
        return responseData;
     }
 
     private void onConnection(){
-        mModel = new InventoryModel();
-        mModel.setCommander(getCommander());
-        // The handler for model messages
-        GenericHandler mGenericModelHandler = new GenericHandler(this);
-        mModel.setHandler(mGenericModelHandler);
+
     }
 
     public PluginResponseModel connectDisconnect(
@@ -102,6 +106,7 @@ public class RFIDUtility {
             boolean connect, boolean autoConnect) {
         try {
             if (connect && !macId.isEmpty()) {
+                //Log.w("Array List - ",ReaderManager.sharedInstance().getReaderList().list())
                 ArrayList<Reader> readerArrayList = ReaderManager.sharedInstance().getReaderList().list();
                 int readerIndex = -1;
                 for (int i = 0; i <= readerArrayList.size(); i++) {

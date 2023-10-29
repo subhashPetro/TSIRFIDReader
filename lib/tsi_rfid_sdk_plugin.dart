@@ -27,6 +27,7 @@ class TSIRfidSdkPlugin {
   ///
   Future<dynamic> init() async {
    bool have = await BluetoothPermissionManager.checkAndRequestPermissions();
+   var res = await _channel.invokeMethod('init');
    _hasPermission = have;
    _initialize = true;
   }

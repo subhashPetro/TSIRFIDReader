@@ -37,12 +37,20 @@ public class TslRfidPlugin implements FlutterPlugin, MethodCallHandler, EventCha
     eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "com.example.tsl_rfid_plugin/event_channel");
     eventChannel.setStreamHandler(this);
     rfidUtility = new RFIDUtility(context);
-    rfidUtility.initRfidModel();
   }
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
     switch (call.method) {
+      case "init":
+        try {
+          rfidUtility.initRfidModel();
+          result.success(true);
+        }catch (Exception e){
+          Log.w(TAG, "Exception on init "+e.toString());
+          result.success(false);
+        }
+        break;
       case "getPlatformVersion":
         result.success("Android " + android.os.Build.VERSION.RELEASE);
         break;
