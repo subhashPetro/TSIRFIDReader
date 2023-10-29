@@ -102,7 +102,7 @@ class _MyAppState extends State<MyApp> {
                     print("connected - $res");
                     if (res!=null) {
                       setState(() {
-                        currentConnection = e;
+                        currentConnection = Map.from(e);
                       });
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -136,13 +136,15 @@ class _MyAppState extends State<MyApp> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Connected device - $currentConnection',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(
-                        color: Colors.red,
+                    Expanded(
+                      child: Text(
+                        'Connected device - $currentConnection',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(
+                          color: Colors.red,
+                        ),
                       ),
                     ),
                     TextButton(
