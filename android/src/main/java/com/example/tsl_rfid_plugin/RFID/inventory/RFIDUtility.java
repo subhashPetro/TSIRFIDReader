@@ -109,7 +109,7 @@ public class RFIDUtility {
                 //Log.w("Array List - ",ReaderManager.sharedInstance().getReaderList().list())
                 ArrayList<Reader> readerArrayList = ReaderManager.sharedInstance().getReaderList().list();
                 int readerIndex = -1;
-                for (int i = 0; i <= readerArrayList.size(); i++) {
+                for (int i = 0; i < readerArrayList.size(); i++) {
                     Reader reader = readerArrayList.get(i);
                     String readerMacId = reader.getDisplayInfoLine();
                     if (readerMacId.contains(macId)) {
