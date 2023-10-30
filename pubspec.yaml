@@ -18,6 +18,7 @@ dependencies:
   zebra_print_plugin:
     git: https://github.com/subhashPetro/zebra_print_plugin.git
 
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

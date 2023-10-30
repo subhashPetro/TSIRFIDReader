@@ -17,14 +17,14 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  final String _platformVersion = 'Unknown';
   List<dynamic> _device = [];
 
   Map<String,dynamic>? currentConnection;
   String? batteryLevel;
 
-  bool _working = false;
-  bool _connecting = false;
+  final bool _working = false;
+  final bool _connecting = false;
 
   @override
   void initState() {

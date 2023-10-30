@@ -9,6 +9,8 @@ import java.util.List;
 
 import io.flutter.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
@@ -16,7 +18,7 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 
 /** TslRfidPlugin */
-public class TslRfidPlugin implements FlutterPlugin, MethodCallHandler, EventChannel.StreamHandler {
+public class TslRfidPlugin implements FlutterPlugin, MethodCallHandler, EventChannel.StreamHandler, ActivityAware {
 
   private MethodChannel channel;
   private Context context;
@@ -108,6 +110,28 @@ public class TslRfidPlugin implements FlutterPlugin, MethodCallHandler, EventCha
     sink = null;
   }
 
+
+  @Override
+  public void onAttachedToActivity(ActivityPluginBinding activityPluginBinding) {
+    Log.w(TAG,"Lifecycle state- "+ String.valueOf(activityPluginBinding.getLifecycle()));
+    rfidUtility.onResume();
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+    rfidUtility.onPause();;
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding activityPluginBinding) {
+    Log.w(TAG,"Lifecycle state- "+ String.valueOf(activityPluginBinding.getLifecycle()));
+    rfidUtility.onResume();
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+    rfidUtility.onPause();
+  }
 }
 
 
